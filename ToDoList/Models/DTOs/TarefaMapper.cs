@@ -15,11 +15,11 @@ namespace ToDoList.Models.DTOs
             AtualizadaEm = t.AtualizadaEm,
         };
 
-        public static void ApplyUpdate(this Tarefa entity, TarefaResponse tarefaR)
+        public static void ApplyUpdate(this Tarefa entity, TarefaResponse dto)
         {
-            entity.Titulo = tarefaR.Titulo.Trim();
-            entity.Descricao = tarefaR.Descricao?.Trim();
-            entity.Concluida = tarefaR.Concluida;
+            entity.Titulo = dto.Titulo.Trim();
+            entity.Descricao = dto.Descricao?.Trim();
+            entity.Concluida = dto.Concluida;
             entity.AtualizadaEm = DateTime.UtcNow;
         }
 

@@ -36,5 +36,25 @@ namespace ToDoList.Services
             await _context.SaveChangesAsync();
             return tarefa;
         }
+
+        public async Task<bool> UpdateAsync(Guid id, Action<Tarefa> updateAction)
+        {
+            var tarefa = await GetByIdAsync(id);
+            if (tarefa is null) return false;
+
+            updateAction(tarefa);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var tarefa = await GetByIdAsync(id);
+            if (tarefa is null) return false;
+
+            _context.Tarefas.Remove(tarefa);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
