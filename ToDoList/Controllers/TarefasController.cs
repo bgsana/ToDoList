@@ -28,8 +28,8 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var tarefa = await _service.GetByIdAsync(id);
-            if(tarefa is null)
-                return NotFound(new {message = "Tarefa não encontrada"});
+            if (tarefa is null)
+                return NotFound(new { message = "Tarefa não encontrada" });
 
             return Ok(tarefa.ToResponse());
         }
@@ -42,17 +42,17 @@ namespace ToDoList.Controllers
         }
 
         [HttpPut("{id: guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] TarefaUpdate dto)
+        public async Task<IActionResult> Update(Guid id, TarefaUpdate dto)
         {
             var ok = await _service.UpdateAsync(id, tarefa => tarefa.ApplyUpdate(dto));
             if (!ok) return NotFound(new { message = "Tarefa não encontrada." });
-            
+
             return NoContent();
         }
 
         [HttpDelete("{id: guid}")]
         public async Task<IActionResult> Delete(Guid id)
-        { 
+        {
             var tarefa = await _service.DeleteAsync(id);
             if (!tarefa) return NotFound(new { message = "Tarefa não encontrada." });
 

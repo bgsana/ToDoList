@@ -15,7 +15,7 @@ namespace ToDoList.Models.DTOs
             AtualizadaEm = t.AtualizadaEm,
         };
 
-        public static void ApplyUpdate(this Tarefa entity, TarefaResponse dto)
+        public static void ApplyUpdate(this Tarefa entity, TarefaUpdate dto)
         {
             entity.Titulo = dto.Titulo.Trim();
             entity.Descricao = dto.Descricao?.Trim();

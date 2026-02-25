@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Models.Entities;
+﻿using ToDoList.Models.DTOs;
+
+namespace ToDoList.Models.Entities;
 
 public class Tarefa
 {
@@ -8,4 +10,9 @@ public class Tarefa
     public bool Concluida { get; set; }
     public DateTime CriadaEm { get; set; } = DateTime.UtcNow;
     public DateTime AtualizadaEm { get; set; }
+
+    internal void ApplyUpdate(TarefaUpdate dto)
+    {
+        throw new NotImplementedException();
+    }
 }
