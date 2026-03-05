@@ -10,9 +10,7 @@ public class Tarefa
     public bool Concluida { get; set; }
     public DateTime CriadaEm { get; set; } = DateTime.UtcNow;
     public DateTime AtualizadaEm { get; set; }
+    public Guid UsuarioId { get; set; }
+    public Usuario? Usuario { get; set; }
 
-    internal void ApplyUpdate(TarefaUpdate dto)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -8,7 +8,7 @@ namespace ToDoList.Services
     {
         private readonly AppDbContext _context;
 
-        // Método Construtor:
+        // método construtor
         public TarefaService(AppDbContext context)
         {
             _context = context;
@@ -16,7 +16,7 @@ namespace ToDoList.Services
 
         public async Task<List<Tarefa>> GetAllAsync(bool? concluida = null)
         {
-            // Variável que vai consultar as tarefas
+            // variável que vai consultar as tarefas
             var query = _context.Tarefas.AsQueryable();
 
             if (concluida is not null)
@@ -30,7 +30,7 @@ namespace ToDoList.Services
         public async Task<Tarefa> GetByIdAsync(Guid id)
             => await _context.Tarefas.FindAsync(id);
 
-        public async Task<Tarefa> CreateAsync (Tarefa tarefa)
+        public async Task<Tarefa> CreateAsync(Tarefa tarefa)
         {
             _context.Tarefas.Add(tarefa);
             await _context.SaveChangesAsync();

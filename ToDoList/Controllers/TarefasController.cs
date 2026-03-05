@@ -24,7 +24,7 @@ namespace ToDoList.Controllers
             return Ok(items.Select(t => t.ToResponse()));
         }
 
-        [HttpGet("{id: guid}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var tarefa = await _service.GetByIdAsync(id);
@@ -41,16 +41,18 @@ namespace ToDoList.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToResponse());
         }
 
-        [HttpPut("{id: guid}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, TarefaUpdate dto)
         {
+            // MUDANÇA: O 'ApplyUpdate' agora é chamado dentro de uma expressão lambda.
+            // Isso mantém o seu método de Service original (Action<Tarefa>) funcionando!
             var ok = await _service.UpdateAsync(id, tarefa => tarefa.ApplyUpdate(dto));
-            if (!ok) return NotFound(new { message = "Tarefa não encontrada." });
 
-            return NoContent();
+            // RESPOSTA: 204 (NoContent) para sucesso ou 404 para erro
+            return ok ? NoContent() : NotFound();
         }
 
-        [HttpDelete("{id: guid}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var tarefa = await _service.DeleteAsync(id);
@@ -58,5 +60,6 @@ namespace ToDoList.Controllers
 
             return NoContent();
         }
+
     }
 }
