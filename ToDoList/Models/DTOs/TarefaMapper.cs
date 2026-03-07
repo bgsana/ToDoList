@@ -10,7 +10,7 @@ namespace ToDoList.Models.DTOs
             Id = t.Id,
             Titulo = t.Titulo,
             Descricao = t.Descricao,
-            // UsuarioId = t.UsuarioId,
+            UsuarioId = t.UsuarioId, 
             CriadaEm = t.CriadaEm,
             AtualizadaEm = t.AtualizadaEm,
         };
@@ -27,6 +27,7 @@ namespace ToDoList.Models.DTOs
         {
             Titulo = dto.Titulo.Trim(),
             Descricao = dto.Descricao?.Trim(),
+            UsuarioId = dto.UsuarioId, 
             Concluida = false,
             CriadaEm = DateTime.UtcNow,
 

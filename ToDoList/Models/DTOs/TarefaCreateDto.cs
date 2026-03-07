@@ -8,5 +8,7 @@ namespace ToDoList.Models.DTOs
         public string Titulo { get; set; } = "";
         [MaxLength(400)]
         public string? Descricao { get; set; }
+        [Required]
+        public Guid UsuarioId { get; set; }
     }
 }

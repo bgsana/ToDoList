@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+using ToDoList.Models.DTOs;
 
 namespace ToDoList.Services
 {
@@ -14,7 +15,7 @@ namespace ToDoList.Services
             _context = context;
         }
 
-        public async Task<List<Tarefa>> GetAllAsync(bool? concluida = null)
+        public async Task<List<TarefaResponse>> GetAllAsync(bool? concluida = null)
         {
             // variável que vai consultar as tarefas
             var query = _context.Tarefas.AsQueryable();
@@ -24,22 +25,30 @@ namespace ToDoList.Services
                 query = query.Where(t => t.Concluida == concluida);
             }
 
-            return await query.AsNoTracking().ToListAsync();
+            var tarefas = await query.AsNoTracking().ToListAsync();
+
+            return tarefas.Select(t => t.ToResponse()).ToList();
         }
 
-        public async Task<Tarefa> GetByIdAsync(Guid id)
-            => await _context.Tarefas.FindAsync(id);
-
-        public async Task<Tarefa> CreateAsync(Tarefa tarefa)
+        public async Task<TarefaResponse> GetByIdAsync(Guid id)
         {
+            var tarefa =  await _context.Tarefas.FindAsync(id);   
+            return tarefa.ToResponse();
+        }
+
+        public async Task<TarefaResponse> CreateAsync(TarefaCreateDto dto)
+        {
+            var tarefa = dto.ToEntity();
+
             _context.Tarefas.Add(tarefa);
             await _context.SaveChangesAsync();
-            return tarefa;
+
+            return tarefa.ToResponse();
         }
 
         public async Task<bool> UpdateAsync(Guid id, Action<Tarefa> updateAction)
         {
-            var tarefa = await GetByIdAsync(id);
+            var tarefa = await _context.Tarefas.FindAsync(id);
             if (tarefa is null) return false;
 
             updateAction(tarefa);
@@ -49,7 +58,7 @@ namespace ToDoList.Services
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var tarefa = await GetByIdAsync(id);
+            var tarefa = await _context.Tarefas.FindAsync(id);
             if (tarefa is null) return false;
 
             _context.Tarefas.Remove(tarefa);

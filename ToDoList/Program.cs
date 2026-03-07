@@ -24,7 +24,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
+// SERVICES: Sempre adicionar apÃ³s criar um serviÃ§o
 builder.Services.AddScoped<TarefaService>();
+builder.Services.AddScoped<UsuarioService>();
 
 // Customizar os Data Annotations
 
@@ -40,7 +42,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
             );
         return new BadRequestObjectResult(new
         {
-            message = "Falha na validação",
+            message = "Falha na validaï¿½ï¿½o",
             erros
         });
     };
