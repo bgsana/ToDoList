@@ -18,8 +18,6 @@ namespace ToDoList.Models.DTOs
             Id = Guid.NewGuid(),
             Nome = dto.Nome.Trim(),
             Email = dto.Email.Trim().ToLower(),
-
-
         };
     }
 }

@@ -32,7 +32,7 @@ namespace ToDoList.Services
 
         public async Task<TarefaResponse> GetByIdAsync(Guid id)
         {
-            var tarefa =  await _context.Tarefas.FindAsync(id);   
+            var tarefa = await _context.Tarefas.FindAsync(id);
             return tarefa.ToResponse();
         }
 

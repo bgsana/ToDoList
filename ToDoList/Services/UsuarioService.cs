@@ -10,7 +10,7 @@ namespace ToDoList.Services;
 
 public class UsuarioService(AppDbContext context)
 {
-    public async Task<List<UsuarioResponseDto>> GetAllAsync() // Pega todos os usuários
+    public async Task<List<UsuarioResponseDto>> GetAllAsync()
     {
         var usuarios = await context.Usuarios
             .Include(u => u.Tarefas)
@@ -20,16 +20,16 @@ public class UsuarioService(AppDbContext context)
         return usuarios.Select(u => u.ToResponse()).ToList();
     }
 
-    public async Task<UsuarioResponseDto> GetByIdAsync(Guid Id) // Pega um usuário específico
+    public async Task<UsuarioResponseDto> GetByIdAsync(Guid id)
     {
         var usuario = await context.Usuarios
             .Include(u => u.Tarefas)
-            .FirstOrDefaultAsync(u => u.Id == Id);
+            .FirstOrDefaultAsync(u => u.Id == id);
 
         return usuario.ToResponse();
     }
 
-    public async Task<UsuarioResponseDto> CreateAsync(UsuarioCreateDto dto) // Cria um usuário
+    public async Task<UsuarioResponseDto> CreateAsync(UsuarioCreateDto dto)
     {
         var usuario = dto.ToEntity();
         context.Usuarios.Add(usuario);

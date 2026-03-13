@@ -9,22 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", policy =>
         policy.AllowAnyOrigin()
-               .AllowAnyHeader()
-               .AllowAnyMethod());
+              .AllowAnyHeader()
+              .AllowAnyMethod());
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
-// SERVICES: Sempre adicionar após criar um serviço
+// SERVICES: Sempre adicionar após criar um novo
 builder.Services.AddScoped<TarefaService>();
 builder.Services.AddScoped<UsuarioService>();
 
@@ -34,7 +34,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
     {
-        var erros = context.ModelState
+        var errors = context.ModelState
             .Where(e => e.Value?.Errors.Count > 0)
             .ToDictionary(
                 k => k.Key,
@@ -42,8 +42,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
             );
         return new BadRequestObjectResult(new
         {
-            message = "Falha na valida��o",
-            erros
+            message = "Falha de validação.",
+            errors
         });
     };
 });
@@ -52,15 +52,18 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+
     app.MapScalarApiReference(options =>
     {
-        options.WithTitle("Api - To do List")
-                .WithTheme(ScalarTheme.Moon)
-                .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+        options.WithTitle("Api - To Do List")
+               .WithTheme(ScalarTheme.Moon)
+               .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });
+
 }
 
-app.UseCors("Dev Cors");
+app.UseCors("DevCors");
 
 app.UseHttpsRedirection();
 
@@ -69,3 +72,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

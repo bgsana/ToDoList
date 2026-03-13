@@ -12,5 +12,4 @@ public class Tarefa
     public DateTime AtualizadaEm { get; set; }
     public Guid UsuarioId { get; set; }
     public Usuario? Usuario { get; set; }
-
 }

@@ -12,8 +12,8 @@ using ToDoList.Data;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260306231440_AddUserToDb")]
-    partial class AddUserToDb
+    [Migration("20260313231642_alterStracture")]
+    partial class alterStracture
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -8,7 +8,7 @@ namespace ToDoList.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController(UsuarioService usuarioService) : ControllerBase
+    public class UsuariosController(UsuarioService usuarioService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<List<UsuarioResponseDto>>> Get() =>

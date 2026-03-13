@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using ToDoList.Models.DTOs;
+using ToDoList.Services;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models.DTOs;
 using ToDoList.Services;
 
-namespace ToDoList.Controllers
+namespace Aula01.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,34 +21,33 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> GetAll([FromQuery] bool? concluida)
         {
             var items = await _service.GetAllAsync(concluida);
-            return Ok(items.Select(t => t.ToResponse()));
+            return Ok(items);
         }
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var tarefa = await _service.GetByIdAsync(id);
+
             if (tarefa is null)
                 return NotFound(new { message = "Tarefa não encontrada" });
 
-            return Ok(tarefa.ToResponse());
+            return Ok(tarefa);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TarefaCreateDto dto)
         {
-            var created = await _service.CreateAsync(dto.ToEntity());
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToResponse());
+            var created = await _service.CreateAsync(dto);
+
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, TarefaUpdate dto)
         {
-            // MUDANÇA: O 'ApplyUpdate' agora é chamado dentro de uma expressão lambda.
-            // Isso mantém o seu método de Service original (Action<Tarefa>) funcionando!
             var ok = await _service.UpdateAsync(id, tarefa => tarefa.ApplyUpdate(dto));
 
-            // RESPOSTA: 204 (NoContent) para sucesso ou 404 para erro
             return ok ? NoContent() : NotFound();
         }
 
@@ -56,7 +55,9 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var tarefa = await _service.DeleteAsync(id);
-            if (!tarefa) return NotFound(new { message = "Tarefa não encontrada." });
+
+            if (!tarefa)
+                return NotFound(new { message = "Tarefa não encontrada." });
 
             return NoContent();
         }
