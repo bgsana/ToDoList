@@ -27,6 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // SERVICES: Sempre adicionar após criar um novo
 builder.Services.AddScoped<TarefaService>();
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<ComentarioService>();
 
 // Customizar os Data Annotations
 

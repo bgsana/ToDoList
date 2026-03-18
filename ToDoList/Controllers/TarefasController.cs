@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models.DTOs;
 using ToDoList.Services;
 
-namespace Aula01.Controllers
+namespace ToDoList.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

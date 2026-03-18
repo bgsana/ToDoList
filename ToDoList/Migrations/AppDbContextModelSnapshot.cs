@@ -22,6 +22,35 @@ namespace ToDoList.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ToDoList.Models.Entities.Comentario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TarefaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TarefaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Comentarios");
+                });
+
             modelBuilder.Entity("ToDoList.Models.Entities.Tarefa", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,6 +102,25 @@ namespace ToDoList.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ToDoList.Models.Entities.Comentario", b =>
+                {
+                    b.HasOne("ToDoList.Models.Entities.Tarefa", "Tarefa")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("TarefaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ToDoList.Models.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Tarefa");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("ToDoList.Models.Entities.Tarefa", b =>
                 {
                     b.HasOne("ToDoList.Models.Entities.Usuario", "Usuario")
@@ -82,6 +130,11 @@ namespace ToDoList.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ToDoList.Models.Entities.Tarefa", b =>
+                {
+                    b.Navigation("Comentarios");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Entities.Usuario", b =>

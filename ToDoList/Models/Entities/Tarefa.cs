@@ -1,4 +1,5 @@
-﻿using ToDoList.Models.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+using ToDoList.Models.DTOs;
 
 namespace ToDoList.Models.Entities;
 
@@ -12,4 +13,6 @@ public class Tarefa
     public DateTime AtualizadaEm { get; set; }
     public Guid UsuarioId { get; set; }
     public Usuario? Usuario { get; set; }
+
+    public ICollection<Comentario>? Comentarios { get; set; }
 }
