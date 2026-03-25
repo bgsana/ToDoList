@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models.DTOs;
@@ -32,6 +33,8 @@ public class UsuarioService(AppDbContext context)
     public async Task<UsuarioResponseDto> CreateAsync(UsuarioCreateDto dto)
     {
         var usuario = dto.ToEntity();
+
+        usuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
         context.Usuarios.Add(usuario);
         await context.SaveChangesAsync();
 
