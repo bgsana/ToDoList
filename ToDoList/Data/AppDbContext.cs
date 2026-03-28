@@ -34,6 +34,10 @@ namespace ToDoList.Data
                 .HasForeignKey(c => c.UsuarioId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }

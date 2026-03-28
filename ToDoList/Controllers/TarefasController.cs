@@ -1,8 +1,8 @@
 ﻿using ToDoList.Models.DTOs;
 using ToDoList.Services;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Models.DTOs;
-using ToDoList.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace ToDoList.Controllers
 {
@@ -23,7 +23,7 @@ namespace ToDoList.Controllers
             var items = await _service.GetAllAsync(concluida);
             return Ok(items);
         }
-
+        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -35,6 +35,7 @@ namespace ToDoList.Controllers
             return Ok(tarefa);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TarefaCreateDto dto)
         {
@@ -43,6 +44,7 @@ namespace ToDoList.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, TarefaUpdate dto)
         {
@@ -51,6 +53,7 @@ namespace ToDoList.Controllers
             return ok ? NoContent() : NotFound();
         }
 
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {

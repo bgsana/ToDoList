@@ -18,7 +18,7 @@ namespace ToDoList.Services
         public string GerarToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secretKey = _configuration["Jwt: Key"] ?? throw new Exception("A chave Jwt não foi configurada");
+            var secretKey = _configuration["Jwt:Key"] ?? throw new Exception("A chave Jwt não foi configurada");
             var chave = Encoding.ASCII.GetBytes(secretKey);
 
             var tokenDescription = new SecurityTokenDescriptor
@@ -39,6 +39,7 @@ namespace ToDoList.Services
             };
 
             var token = tokenHandler.CreateToken(tokenDescription);
+                return tokenHandler.WriteToken(token);
         }
     }
 }
