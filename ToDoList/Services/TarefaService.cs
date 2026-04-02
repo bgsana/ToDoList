@@ -15,17 +15,28 @@ namespace ToDoList.Services
             _context = context;
         }
 
-        public async Task<List<TarefaResponse>> GetAllAsync(bool? concluida = null)
+        public async Task<List<TarefaResponse>> GetAllAsync(
+            bool? concluida = null, string? busca = null, int pagina = 1, int quantidade = 10)
         {
-            // variável que vai consultar as tarefas
             var query = _context.Tarefas.AsQueryable();
 
-            if (concluida is not null)
+            if (!string.IsNullOrWhiteSpace(busca))
+            {
+                query = query.Where(t => t.Titulo.Contains(busca)
+                                        || (t.Descricao != null && t.Descricao.Contains(busca)));
+            }
+            if(concluida is not null)
             {
                 query = query.Where(t => t.Concluida == concluida);
             }
 
-            var tarefas = await query.AsNoTracking().ToListAsync();
+            query = query.OrderByDescending(t => t.AtualizadaEm ?? t.CriadaEm);
+
+            var tarefas = await query
+                .AsNoTracking()
+                .Skip((pagina - 1) * quantidade)
+                .Take(quantidade)
+                .ToListAsync();
 
             return tarefas.Select(t => t.ToResponse()).ToList();
         }

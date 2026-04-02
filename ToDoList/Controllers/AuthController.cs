@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models.DTOs;
 using ToDoList.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace ToDoList.Controllers
 {
@@ -13,11 +15,13 @@ namespace ToDoList.Controllers
     {
         private readonly AppDbContext _context;
         private readonly AuthService _authService;
+        private readonly UsuarioService _usuarioService;
 
-        public AuthController(AppDbContext context, AuthService authService)
+        public AuthController(AppDbContext context, AuthService authService, UsuarioService usuarioService)
         {
             _context = context;
             _authService = authService;
+            _usuarioService = usuarioService;
         }
 
         [HttpPost("Login")]
@@ -38,6 +42,21 @@ namespace ToDoList.Controllers
                 token = token,
                 usuario = new { usuario.Id, usuario.Nome, usuario.Email }
             });
+        }
+
+        [Authorize]
+        [HttpGet("id")]
+        public async Task<ActionResult<UsuarioResponseDto>> GetById(Guid id)
+        {
+            var usuario = await _usuarioService.GetByIdAsync(id);
+            return usuario is not null ? Ok(usuario) : NotFound();
+        }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult<UsuarioResponseDto>> Post(UsuarioCreateDto dto)
+        {
+            var novoUsuario = await _usuarioService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = novoUsuario.Id }, novoUsuario);
         }
     }
 }

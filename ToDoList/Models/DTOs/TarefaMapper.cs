@@ -13,7 +13,7 @@ namespace ToDoList.Models.DTOs
             Concluida = t.Concluida,
             UsuarioId = t.UsuarioId,
             CriadaEm = t.CriadaEm,
-            AtualizadaEm = t.AtualizadaEm,
+            AtualizadaEm = (DateTime)t.AtualizadaEm,
         };
 
         public static void ApplyUpdate(this Tarefa entity, TarefaUpdate dto)

@@ -18,11 +18,16 @@ namespace ToDoList.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] bool? concluida)
+        public async Task<ActionResult<List<TarefaResponse>>> GetAll(
+            [FromQuery] bool? concluida,
+            [FromQuery] string? busca,
+            [FromQuery] int pagina,
+            [FromQuery] int quantidade = 10)
         {
-            var items = await _service.GetAllAsync(concluida);
-            return Ok(items);
+            var resultado = await _service.GetAllAsync(concluida, busca, pagina, quantidade);
+                return Ok(resultado);
         }
+
         [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
