@@ -19,13 +19,13 @@ namespace ToDoList.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<TarefaResponse>>> GetAll(
-            [FromQuery] bool? concluida,
-            [FromQuery] string? busca,
-            [FromQuery] int pagina,
-            [FromQuery] int quantidade = 10)
+            bool? concluida,
+            string? busca,
+            int pagina = 1,
+            int quantidade = 10)
         {
             var resultado = await _service.GetAllAsync(concluida, busca, pagina, quantidade);
-                return Ok(resultado);
+            return Ok(resultado);
         }
 
         [Authorize]
